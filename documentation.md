@@ -891,8 +891,8 @@ Create an instance of `GoogleNews` class.
 articles = GoogleNews("topic")
 ```
 
-| Methods          | Details                                                                             |
-| ---------------- | ----------------------------------------------------------------------------------- |
+| Methods          | Details                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------------------- |
 | `.getArticles()` | Returns the articles with title, descriptions, news source, date and link in JSON format |
 
 **Example**
@@ -901,6 +901,7 @@ articles = GoogleNews("topic")
 art = GoogleNews("github")
 scrape = art.getArticles()
 ```
+
 ## TimesJobs
 
 ```python

@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import json
 
 
 class GoogleNews:
@@ -13,7 +12,7 @@ class GoogleNews:
     Methods :\n
     1. ``.getArticles() | Response - Articles with title, descriptions, news source, date and link.
     """
-    
+
     def __init__(self, topic):
         self.topic = topic
 
@@ -34,40 +33,26 @@ class GoogleNews:
             "link": Link to the article
         }
         """
-        url = (
-            "https://www.google.com/search?q=" + self.topic + "&tbm=nws"
-        )
+        url = "https://www.google.com/search?q=" + self.topic + "&tbm=nws"
         try:
             res = requests.get(url)
             soup = BeautifulSoup(res.text, "html.parser")
 
             articles_data = {"articles": []}
 
-            articles = soup.find_all(
-                "a", jsname="ACyKwe"
-            )
+            articles = soup.find_all("a", jsname="ACyKwe")
             for a in articles:
-                title = (
-                    a.find("div", class_="BNeawe vvjwJb AP7Wnd")
-                    .getText()
-                )
-                date = (
-                    a.find("span", class_="r0bn4c rQMQod")
-                    .getText()
-                )
+                title = a.find("div", class_="BNeawe vvjwJb AP7Wnd").getText()
+                date = a.find("span", class_="r0bn4c rQMQod").getText()
                 desc = (
                     a.find("div", class_="BNeawe s3v9rd AP7Wnd")
                     .getText()
-                    .replace(date, '')
+                    .replace(date, "")
                 )
-                news_source = (
-                    a.find("div", class_="BNeawe UPmit AP7Wnd lRVwie")
-                    .getText()
-                )
-                link = (
-                    a["href"]
-                    .replace("/url?q=", '')
-                )
+                news_source = a.find(
+                    "div", class_="BNeawe UPmit AP7Wnd lRVwie"
+                ).getText()
+                link = a["href"].replace("/url?q=", "")
                 articles_data["articles"].append(
                     {
                         "title": title,
@@ -77,11 +62,6 @@ class GoogleNews:
                         "link": link,
                     }
                 )
-            res_json = json.dumps(articles_data)
-            return res_json
+            return articles_data
         except:
-            error_message = {
-                "message": "Can't fetch any articles from the topic provided."
-            }
-            ejson = json.dumps(error_message)
-            return ejson
+            return None
